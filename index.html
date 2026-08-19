@@ -1,1 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
+  <title>Koshé</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      font-family: Arial, sans-serif;
+    }
+
+    /* PANTALLA DEL VIDEO */
+    #videoScreen {
+      width: 100%;
+      height: 100dvh;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #kosheVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+
+    /* FORMULARIO - EMPIEZA OCULTO */
+    #formScreen {
+      display: none;
+      width: 100%;
+      min-height: 100dvh;
+      background: white;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    #formScreen.show {
+      opacity: 1;
+    }
+
+    #formScreen iframe {
+      width: 100%;
+      height: 100dvh;
+      border: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- VIDEO -->
+  <div id="videoScreen">
+    <video
+      id="kosheVideo"
+      playsinline
+      controls
+      preload="auto">
+      <source src="video.mp4" type="video/mp4">
+    </video>
+  </div>
+
+
+  <!-- TALLY -->
+  <div id="formScreen">
+
+    <iframe
+      data-tally-src="https://tally.so/r/J9E8yo?transparentBackground=1"
+      width="100%"
+      height="100%"
+      frameborder="0"
+      marginheight="0"
+      marginwidth="0"
+      title="Sorteo Koshé">
+    </iframe>
+
+  </div>
+
+
+  <script async src="https://tally.so/widgets/embed.js"></script>
+
+  <script>
+    const video = document.getElementById("kosheVideo");
+    const videoScreen = document.getElementById("videoScreen");
+    const formScreen = document.getElementById("formScreen");
+
+    video.addEventListener("ended", function () {
+
+      // Ocultar video
+      videoScreen.style.display = "none";
+
+      // Mostrar formulario
+      formScreen.style.display = "block";
+
+      // Animación suave
+      setTimeout(function () {
+        formScreen.classList.add("show");
+      }, 50);
+
+      // Llevar al inicio
+      window.scrollTo(0, 0);
+    });
+  </script>
+
+</body>
+</html>
