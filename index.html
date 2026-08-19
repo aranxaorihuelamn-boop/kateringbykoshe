@@ -2,8 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <title>Koshé</title>
 
@@ -18,17 +17,18 @@
       width: 100%;
       height: 100%;
       background: #000;
-      font-family: Arial, sans-serif;
+      overflow: hidden;
     }
 
-    /* PANTALLA DEL VIDEO */
+    /* VIDEO */
     #videoScreen {
+      position: relative;
       width: 100%;
       height: 100dvh;
       background: #000;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
     }
 
     #kosheVideo {
@@ -38,14 +38,34 @@
       background: #000;
     }
 
-    /* FORMULARIO - EMPIEZA OCULTO */
+    /* BOTÓN PLAY */
+    #playButton {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.92);
+      font-size: 38px;
+      cursor: pointer;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-left: 7px;
+    }
+
+    /* FORM */
     #formScreen {
       display: none;
       width: 100%;
-      min-height: 100dvh;
-      background: white;
+      height: 100dvh;
+      background: #fff;
       opacity: 0;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.4s ease;
     }
 
     #formScreen.show {
@@ -54,7 +74,7 @@
 
     #formScreen iframe {
       width: 100%;
-      height: 100dvh;
+      height: 100%;
       border: 0;
     }
   </style>
@@ -62,56 +82,67 @@
 
 <body>
 
-  <!-- VIDEO -->
   <div id="videoScreen">
+
     <video
       id="kosheVideo"
       playsinline
-      controls
-      preload="auto">
+      preload="metadata">
       <source src="video.mp4" type="video/mp4">
+      Tu navegador no puede reproducir este video.
     </video>
+
+    <button id="playButton" aria-label="Reproducir video">
+      ▶
+    </button>
+
   </div>
 
-
-  <!-- TALLY -->
   <div id="formScreen">
-
     <iframe
       data-tally-src="https://tally.so/r/J9E8yo?transparentBackground=1"
       width="100%"
       height="100%"
       frameborder="0"
-      marginheight="0"
-      marginwidth="0"
       title="Sorteo Koshé">
     </iframe>
-
   </div>
 
-
-  <script async src="https://tally.so/widgets/embed.js"></script>
+  <script src="https://tally.so/widgets/embed.js"></script>
 
   <script>
     const video = document.getElementById("kosheVideo");
+    const playButton = document.getElementById("playButton");
     const videoScreen = document.getElementById("videoScreen");
     const formScreen = document.getElementById("formScreen");
 
-    video.addEventListener("ended", function () {
+    playButton.addEventListener("click", async function () {
+      try {
+        await video.play();
+        playButton.style.display = "none";
+      } catch (error) {
+        console.error("No se pudo reproducir:", error);
+      }
+    });
 
-      // Ocultar video
+    video.addEventListener("pause", function () {
+      if (!video.ended) {
+        playButton.style.display = "flex";
+      }
+    });
+
+    video.addEventListener("play", function () {
+      playButton.style.display = "none";
+    });
+
+    video.addEventListener("ended", function () {
       videoScreen.style.display = "none";
 
-      // Mostrar formulario
       formScreen.style.display = "block";
 
-      // Animación suave
       setTimeout(function () {
         formScreen.classList.add("show");
       }, 50);
-
-      // Llevar al inicio
-      window.scrollTo(0, 0);
     });
   </script>
 
