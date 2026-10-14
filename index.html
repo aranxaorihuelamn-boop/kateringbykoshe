@@ -1,139 +1,377 @@
+
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
   >
 
-  <title>JOIN THE KOALA CLUB</title>
+  <title>Koala Club | Koshé</title>
+
+  <!-- TALLY -->
+  <script async src="https://tally.so/widgets/embed.js"></script>
 
   <style>
     * {
       box-sizing: border-box;
+    }
+
+    html,
+    body {
       margin: 0;
       padding: 0;
-    }
-
-    html, body {
       width: 100%;
       height: 100%;
-      background: black;
-      overflow: hidden;
+      background: #000;
+      font-family: Arial, sans-serif;
     }
 
-    /* VIDEO */
-    #videoScreen {
+    /* VIDEO SCREEN */
+
+    #video-screen {
       position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
-      background: black;
+      background: #000;
+      z-index: 10;
+
+      opacity: 1;
+      visibility: visible;
+
+      transition:
+        opacity 0.8s ease,
+        visibility 0.8s ease;
+    }
+
+    #video-screen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    #koshe-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* SOUND BUTTON */
+
+    #sound-button {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 30;
+
+      width: 28px;
+      height: 28px;
+
+      padding: 0;
+
+      border: none;
+      border-radius: 50%;
+
+      background: rgba(0, 0, 0, 0.35);
+      color: white;
+
+      font-size: 13px;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 10;
+
+      cursor: pointer;
+
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
 
-    #kosheVideo {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: black;
+    /* SKIP BUTTON */
+
+    #skip-button {
+      position: absolute;
+      left: 50%;
+      bottom: 32px;
+      transform: translateX(-50%);
+      z-index: 30;
+
+      padding: 12px 22px;
+
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 999px;
+
+      background: rgba(0, 0, 0, 0.45);
+      color: white;
+
+      font-size: 15px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
-    /* TALLY */
-    #formScreen {
+    /* PLAY BUTTON */
+
+    #play-button {
       display: none;
+
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 30;
+
+      padding: 14px 24px;
+
+      border: none;
+      border-radius: 999px;
+
+      background: white;
+      color: black;
+
+      font-size: 16px;
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    /* FORM SCREEN */
+
+    #form-screen {
       position: fixed;
       inset: 0;
+
       width: 100%;
       height: 100%;
+
       background: white;
+
       z-index: 20;
 
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+
       opacity: 0;
-      transition: opacity 0.5s ease;
+      visibility: hidden;
+      pointer-events: none;
+
+      transition:
+        opacity 0.8s ease,
+        visibility 0.8s ease;
     }
 
-    #formScreen.show {
+    #form-screen.fade-in {
       opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
     }
 
-    #formScreen iframe {
+    #form-screen iframe {
+      display: block;
+
       width: 100%;
       height: 100%;
+
+      min-height: 616px;
+
       border: none;
     }
+
+    /* MOBILE */
+
+    @media (max-width: 600px) {
+      #skip-button {
+        bottom: 28px;
+      }
+    }
+
+    /* ACCESSIBILITY */
+
+    @media (prefers-reduced-motion: reduce) {
+      #video-screen,
+      #form-screen {
+        transition-duration: 0.01ms;
+      }
+    }
+
   </style>
 </head>
 
-
 <body>
 
-  <!-- PRIMERO: VIDEO -->
-  <div id="videoScreen">
+  <!-- VIDEO DE BIENVENIDA -->
+
+  <div id="video-screen">
 
     <video
-      id="kosheVideo"
-      controls
+      id="koshe-video"
+      autoplay
+      muted
       playsinline
       preload="auto"
     >
-      <source src="./video2.mp4" type="video/mp4">
+      <source src="video.mp4" type="video/mp4">
     </video>
+
+    <button
+      id="sound-button"
+      aria-label="Activar sonido"
+    >
+      🔊
+    </button>
+
+    <button id="play-button">
+      Ver video
+    </button>
+
+    <button id="skip-button">
+      Saltar video
+    </button>
 
   </div>
 
 
-  <!-- DESPUÉS: JOIN THE KOALA CLUB -->
-  <div id="formScreen">
+  <!-- FORMULARIO TALLY -->
+
+  <div id="form-screen">
 
     <iframe
-      data-tally-src="https://tally.so/r/J9E8yo?transparentBackground=1"
+      data-tally-src="https://tally.so/embed/J9E8yo?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+      loading="lazy"
       width="100%"
-      height="100%"
+      height="616"
       frameborder="0"
       marginheight="0"
       marginwidth="0"
-      title="JOIN THE KOALA CLUB">
-    </iframe>
+      title="JOIN THE KOALA CLUB 🐨"
+    ></iframe>
 
   </div>
 
 
-  <script src="https://tally.so/widgets/embed.js"></script>
-
+  <!-- JAVASCRIPT -->
 
   <script>
 
-    const video = document.getElementById("kosheVideo");
-    const videoScreen = document.getElementById("videoScreen");
-    const formScreen = document.getElementById("formScreen");
+    const video = document.getElementById("koshe-video");
+
+    const videoScreen = document.getElementById("video-screen");
+
+    const formScreen = document.getElementById("form-screen");
+
+    const soundButton = document.getElementById("sound-button");
+
+    const skipButton = document.getElementById("skip-button");
+
+    const playButton = document.getElementById("play-button");
+
+
+    /* TRANSICIÓN VIDEO → FORMULARIO */
+
+    let formAlreadyShown = false;
+
+    function showForm() {
+
+      if (formAlreadyShown) return;
+
+      formAlreadyShown = true;
+
+      video.pause();
+
+      // Cargar el formulario
+      if (typeof Tally !== "undefined") {
+        Tally.loadEmbeds();
+      }
+
+      // Mostrar formulario y ocultar video
+      formScreen.classList.add("fade-in");
+
+      videoScreen.classList.add("fade-out");
+
+    }
 
 
     /* CUANDO TERMINA EL VIDEO */
 
-    video.addEventListener("ended", function () {
+    video.addEventListener("ended", showForm);
 
-      /* Desaparece el video */
-      videoScreen.style.display = "none";
 
-      /* Aparece Tally */
-      formScreen.style.display = "block";
+    /* BOTÓN SALTAR VIDEO */
 
-      /* Pequeño fade */
-      setTimeout(function () {
-        formScreen.classList.add("show");
-      }, 50);
+    skipButton.addEventListener("click", showForm);
+
+
+    /* ACTIVAR SONIDO */
+
+    soundButton.addEventListener("click", async () => {
+
+      try {
+
+        video.muted = false;
+
+        video.volume = 1;
+
+        await video.play();
+
+        soundButton.style.display = "none";
+
+      } catch (error) {
+
+        console.log("No se pudo activar el sonido.");
+
+      }
+
+    });
+
+
+    /* REPRODUCCIÓN AUTOMÁTICA */
+
+    window.addEventListener("load", async () => {
+
+      try {
+
+        await video.play();
+
+      } catch (error) {
+
+        playButton.style.display = "block";
+
+      }
+
+    });
+
+
+    /* BOTÓN VER VIDEO */
+
+    playButton.addEventListener("click", async () => {
+
+      try {
+
+        video.muted = false;
+
+        video.volume = 1;
+
+        await video.play();
+
+        playButton.style.display = "none";
+
+        soundButton.style.display = "none";
+
+      } catch (error) {
+
+        console.log("No se pudo reproducir el video.");
+
+      }
 
     });
 
   </script>
 
 </body>
-
 </html>
