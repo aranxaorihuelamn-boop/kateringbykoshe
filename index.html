@@ -178,21 +178,20 @@
 
   </div>
 
+  <!-- FORMULARIO DE TALLY ACTUALIZADO -->
 
-  <!-- FORMULARIO DE TALLY -->
-  
-<div id="form-screen">
-  <iframe
-    data-tally-src="https://tally.so/embed/1Aee9g?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-    loading="lazy"
-    width="100%"
-    height="799"
-    frameborder="0"
-    marginheight="0"
-    marginwidth="0"
-    title="JOIN THE KOALA CLUB"
-  ></iframe>
-</div>
+  <div id="form-screen">
+    <iframe
+      data-tally-src="https://tally.so/embed/1Aee9g?dynamicHeight=1"
+      loading="lazy"
+      width="100%"
+      height="799"
+      frameborder="0"
+      marginheight="0"
+      marginwidth="0"
+      title="JOIN THE KOALA CLUB"
+    ></iframe>
+  </div>
 
   <!-- JAVASCRIPT -->
 
@@ -208,23 +207,19 @@
 
     let formShown = false;
 
-
     // CARGAR TALLY
 
     function loadTally() {
       const iframe = formScreen.querySelector("iframe");
 
       if (iframe && !iframe.src) {
-        const tallyUrl = iframe.dataset.tallySrc;
+        iframe.src = iframe.dataset.tallySrc;
+      }
 
-        if (typeof Tally !== "undefined") {
-          Tally.loadEmbeds();
-        } else {
-          iframe.src = tallyUrl;
-        }
+      if (typeof Tally !== "undefined") {
+        Tally.loadEmbeds();
       }
     }
-
 
     // CAMBIAR DEL VIDEO AL FORMULARIO
 
@@ -236,29 +231,23 @@
 
       video.pause();
 
-      // Cargar formulario antes de mostrarlo
       loadTally();
 
-      // Transición simultánea
       videoScreen.classList.add("fade-out");
       formScreen.classList.add("fade-in");
 
-      // Ocultar botones del video
       soundButton.style.display = "none";
       skipButton.style.display = "none";
       playButton.style.display = "none";
     }
 
-
     // FINAL DEL VIDEO
 
     video.addEventListener("ended", showForm);
 
-
     // SALTAR VIDEO
 
     skipButton.addEventListener("click", showForm);
-
 
     // ACTIVAR SONIDO
 
@@ -278,43 +267,34 @@
 
     });
 
-
     // INTENTAR REPRODUCCIÓN AUTOMÁTICA
 
     async function startVideo() {
 
       try {
-
         await video.play();
 
       } catch (error) {
-
         playButton.style.display = "block";
-
       }
 
     }
-
 
     // BOTÓN VER VIDEO
 
     playButton.addEventListener("click", async function() {
 
       try {
-
         video.muted = true;
         await video.play();
 
         playButton.style.display = "none";
 
       } catch (error) {
-
         console.log("No se pudo reproducir el video.");
-
       }
 
     });
-
 
     // INICIAR
 
@@ -328,3 +308,4 @@
 
 </body>
 </html>
+
