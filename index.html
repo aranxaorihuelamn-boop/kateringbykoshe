@@ -3,15 +3,11 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <title>Koala Club | Koshé</title>
 
-  <!-- TALLY -->
+  <!-- TALLY SCRIPT -->
   <script async src="https://tally.so/widgets/embed.js"></script>
 
   <style>
@@ -19,44 +15,39 @@
       box-sizing: border-box;
     }
 
-    html,
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 100%;
+      min-height: 100%;
       background: #000;
       font-family: Arial, sans-serif;
+      overflow: hidden;
     }
 
-    /* VIDEO SCREEN */
+    /* VIDEO */
 
     #video-screen {
       position: fixed;
       inset: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
       z-index: 10;
-
+      background: #000;
       opacity: 1;
       visibility: visible;
+      transition: opacity 1s ease, visibility 1s ease;
+    }
 
-      transition:
-        opacity 0.8s ease,
-        visibility 0.8s ease;
+    #koshe-video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     #video-screen.fade-out {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-    }
-
-    #koshe-video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
 
     /* SOUND BUTTON */
@@ -66,28 +57,15 @@
       top: 14px;
       right: 14px;
       z-index: 30;
-
-      width: 28px;
-      height: 28px;
-
-      padding: 0;
-
+      width: 36px;
+      height: 36px;
       border: none;
       border-radius: 50%;
-
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0,0,0,0.4);
       color: white;
-
-      font-size: 13px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
+      font-size: 15px;
       cursor: pointer;
-
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(5px);
     }
 
     /* SKIP BUTTON */
@@ -98,72 +76,51 @@
       bottom: 32px;
       transform: translateX(-50%);
       z-index: 30;
-
-      padding: 12px 22px;
-
-      border: 1px solid rgba(255, 255, 255, 0.8);
+      padding: 12px 24px;
+      border: 1px solid rgba(255,255,255,0.8);
       border-radius: 999px;
-
-      background: rgba(0, 0, 0, 0.45);
+      background: rgba(0,0,0,0.45);
       color: white;
-
       font-size: 15px;
       font-weight: 600;
-
       cursor: pointer;
-
       backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
     }
 
     /* PLAY BUTTON */
 
     #play-button {
       display: none;
-
       position: absolute;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
       z-index: 30;
-
       padding: 14px 24px;
-
       border: none;
       border-radius: 999px;
-
       background: white;
       color: black;
-
       font-size: 16px;
       font-weight: 700;
-
       cursor: pointer;
     }
 
-    /* FORM SCREEN */
+    /* FORM */
 
     #form-screen {
       position: fixed;
       inset: 0;
-
+      z-index: 20;
       width: 100%;
       height: 100%;
-
       background: white;
-
-      z-index: 20;
-
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-
-      transition:
-        opacity 0.8s ease,
-        visibility 0.8s ease;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      transition: opacity 1s ease, visibility 1s ease;
     }
 
     #form-screen.fade-in {
@@ -174,24 +131,12 @@
 
     #form-screen iframe {
       display: block;
-
       width: 100%;
+      min-height: 100%;
       height: 100%;
-
-      min-height: 616px;
-
-      border: none;
+      border: 0;
+      background: white;
     }
-
-    /* MOBILE */
-
-    @media (max-width: 600px) {
-      #skip-button {
-        bottom: 28px;
-      }
-    }
-
-    /* ACCESSIBILITY */
 
     @media (prefers-reduced-motion: reduce) {
       #video-screen,
@@ -199,7 +144,6 @@
         transition-duration: 0.01ms;
       }
     }
-
   </style>
 </head>
 
@@ -214,15 +158,13 @@
       autoplay
       muted
       playsinline
+      webkit-playsinline
       preload="auto"
     >
       <source src="video2.mp4" type="video/mp4">
     </video>
 
-    <button
-      id="sound-button"
-      aria-label="Activar sonido"
-    >
+    <button id="sound-button" aria-label="Activar sonido">
       🔊
     </button>
 
@@ -237,7 +179,7 @@
   </div>
 
 
-  <!-- FORMULARIO TALLY -->
+  <!-- FORMULARIO DE TALLY -->
 
   <div id="form-screen">
 
@@ -245,11 +187,11 @@
       data-tally-src="https://tally.so/embed/J9E8yo?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
       loading="lazy"
       width="100%"
-      height="616"
+      height="100%"
       frameborder="0"
       marginheight="0"
       marginwidth="0"
-      title="JOIN THE KOALA CLUB 🐨"
+      title="JOIN THE KOALA CLUB"
     ></iframe>
 
   </div>
@@ -260,61 +202,73 @@
   <script>
 
     const video = document.getElementById("koshe-video");
-
     const videoScreen = document.getElementById("video-screen");
-
     const formScreen = document.getElementById("form-screen");
 
     const soundButton = document.getElementById("sound-button");
-
     const skipButton = document.getElementById("skip-button");
-
     const playButton = document.getElementById("play-button");
 
+    let formShown = false;
 
-    /* TRANSICIÓN VIDEO → FORMULARIO */
 
-    let formAlreadyShown = false;
+    // CARGAR TALLY
 
-    function showForm() {
+    function loadTally() {
+      const iframe = formScreen.querySelector("iframe");
 
-      if (formAlreadyShown) return;
+      if (iframe && !iframe.src) {
+        const tallyUrl = iframe.dataset.tallySrc;
 
-      formAlreadyShown = true;
-
-      video.pause();
-
-      // Cargar el formulario
-      if (typeof Tally !== "undefined") {
-        Tally.loadEmbeds();
+        if (typeof Tally !== "undefined") {
+          Tally.loadEmbeds();
+        } else {
+          iframe.src = tallyUrl;
+        }
       }
-
-      // Mostrar formulario y ocultar video
-      formScreen.classList.add("fade-in");
-
-      videoScreen.classList.add("fade-out");
-
     }
 
 
-    /* CUANDO TERMINA EL VIDEO */
+    // CAMBIAR DEL VIDEO AL FORMULARIO
+
+    function showForm() {
+
+      if (formShown) return;
+
+      formShown = true;
+
+      video.pause();
+
+      // Cargar formulario antes de mostrarlo
+      loadTally();
+
+      // Transición simultánea
+      videoScreen.classList.add("fade-out");
+      formScreen.classList.add("fade-in");
+
+      // Ocultar botones del video
+      soundButton.style.display = "none";
+      skipButton.style.display = "none";
+      playButton.style.display = "none";
+    }
+
+
+    // FINAL DEL VIDEO
 
     video.addEventListener("ended", showForm);
 
 
-    /* BOTÓN SALTAR VIDEO */
+    // SALTAR VIDEO
 
     skipButton.addEventListener("click", showForm);
 
 
-    /* ACTIVAR SONIDO */
+    // ACTIVAR SONIDO
 
-    soundButton.addEventListener("click", async () => {
+    soundButton.addEventListener("click", async function() {
 
       try {
-
         video.muted = false;
-
         video.volume = 1;
 
         await video.play();
@@ -322,17 +276,15 @@
         soundButton.style.display = "none";
 
       } catch (error) {
-
         console.log("No se pudo activar el sonido.");
-
       }
 
     });
 
 
-    /* REPRODUCCIÓN AUTOMÁTICA */
+    // INTENTAR REPRODUCCIÓN AUTOMÁTICA
 
-    window.addEventListener("load", async () => {
+    async function startVideo() {
 
       try {
 
@@ -344,24 +296,19 @@
 
       }
 
-    });
+    }
 
 
-    /* BOTÓN VER VIDEO */
+    // BOTÓN VER VIDEO
 
-    playButton.addEventListener("click", async () => {
+    playButton.addEventListener("click", async function() {
 
       try {
 
-        video.muted = false;
-
-        video.volume = 1;
-
+        video.muted = true;
         await video.play();
 
         playButton.style.display = "none";
-
-        soundButton.style.display = "none";
 
       } catch (error) {
 
@@ -370,6 +317,15 @@
       }
 
     });
+
+
+    // INICIAR
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", startVideo);
+    } else {
+      startVideo();
+    }
 
   </script>
 
